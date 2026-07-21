@@ -9,6 +9,8 @@ title: Home
 
 欢迎来到 [Horizon](https://github.com/thysrael/Horizon)，一个 AI 驱动的信息聚合系统。
 
+[打开 AI 前沿情报雷达](radar.html)
+
 ## 文档
 
 - [配置指南](configuration) — AI 提供商、信息源、过滤规则与环境变量替换
