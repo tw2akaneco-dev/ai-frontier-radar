@@ -1,6 +1,7 @@
 """Content analysis using AI."""
 
 import asyncio
+import html
 import json
 import re
 from typing import List, Optional
@@ -18,7 +19,7 @@ DEFAULT_THROTTLE_SEC = 0.0
 class ContentAnalyzer:
     """Analyzes content items using AI to determine importance."""
 
-    def __init__(self, ai_client: AIClient):
+    def __init__(self, ai_client: Optional[AIClient] = None):
         self.client = ai_client
 
     @staticmethod
@@ -35,7 +36,106 @@ class ContentAnalyzer:
         throttle_sec = getattr(config, "throttle_sec", DEFAULT_THROTTLE_SEC)
         return max(throttle_sec, 0.0)
 
+    @staticmethod
+    def _plain_text(value: str) -> str:
+        value = value.split("--- Top Comments ---", 1)[0]
+        value = re.sub(r"<[^>]+>", " ", value)
+        value = re.sub(r"\[([^]]+)\]\([^)]+\)", r"\1", value)
+        value = re.sub(r"\s+", " ", html.unescape(value)).strip()
+        if len(value) <= 320:
+            return value
+        return value[:317].rsplit(" ", 1)[0] + "..."
+
+    @staticmethod
+    def _rule_tags(item: ContentItem) -> tuple[List[str], float]:
+        text = item.title.lower()
+        groups = [
+            ("mcp", 0.8, ("mcp", "model context protocol")),
+            ("agent", 0.6, ("agent", "agentic", "coding assistant", "computer use", "browser use")),
+            ("model", 0.4, ("llm", "model", "gpt", "claude", "gemini", "qwen", "transformer")),
+            ("inference", 0.5, ("inference", "reasoning", "vllm", "ollama", "llama.cpp", "serving")),
+            ("research", 0.3, ("paper", "benchmark", "arxiv", "dataset", "training")),
+            ("open-source", 0.3, ("open source", "open-source", "github", "release")),
+        ]
+        tags = []
+        relevance = 0.0
+        for tag, weight, terms in groups:
+            if any(term in text for term in terms):
+                tags.append(tag)
+                relevance += weight
+        category = item.metadata.get("category")
+        if category and category not in tags:
+            tags.append(str(category))
+        return tags[:6], min(relevance, 1.5)
+
+    def _analyze_item_with_rules(self, item: ContentItem) -> None:
+        meta = item.metadata
+        tags, relevance = self._rule_tags(item)
+        source = item.source_type.value
+        score = 5.0
+        reasons = []
+
+        if source == "github":
+            score = 7.4
+            reasons.append("受监控项目发布新版本")
+            if meta.get("prerelease"):
+                score -= 0.8
+                reasons.append("预发布版本")
+        elif source == "rss":
+            score = 6.6
+            category_weights = {
+                "frontier-labs": 1.6,
+                "mcp": 1.5,
+                "open-source": 1.0,
+                "ai-engineering": 0.8,
+                "ai-industry": 0.7,
+                "ai-news": 0.7,
+                "research": -1.1,
+            }
+            score += category_weights.get(str(meta.get("category") or ""), 0.3)
+            feed_name = str(meta.get("feed_name") or "")
+            if feed_name == "Awesome MCP Servers":
+                score -= 1.2
+            elif feed_name == "MCP Protocol Commits":
+                score += 0.3
+            reasons.append(f"来自 {meta.get('feed_name') or 'RSS'}")
+        elif source == "hackernews":
+            popularity = float(meta.get("score") or 0)
+            comments = float(meta.get("descendants") or 0)
+            score = 5.3 + min(popularity / 100, 1.8) + min(comments / 75, 0.8)
+            if relevance == 0:
+                score = min(score, 6.8)
+            reasons.append(f"Hacker News {int(popularity)} 分")
+        elif source == "reddit":
+            popularity = float(meta.get("score") or 0)
+            comments = float(meta.get("num_comments") or 0)
+            subreddit = str(meta.get("subreddit") or "")
+            community_bonus = {"mcp": 1.1, "LocalLLaMA": 0.5, "MachineLearning": 0.3}.get(subreddit, 0.2)
+            score = 5.0 + community_bonus + min(popularity / 100, 1.6) + min(comments / 75, 0.8)
+            reasons.append(f"r/{subreddit} {int(popularity)} 分")
+
+        score += relevance
+        if tags:
+            reasons.append("主题匹配 " + "、".join(tags[:3]))
+
+        item.ai_score = round(max(0.0, min(score, 10.0)), 1)
+        item.ai_reason = "；".join(reasons) or "规则评分"
+        item.ai_tags = tags
+
+        excerpt = self._plain_text(item.content or "")
+        if excerpt:
+            item.ai_summary = excerpt
+        elif source == "github":
+            item.ai_summary = f"项目 {meta.get('repo') or item.title} 发布版本 {meta.get('tag') or ''}。"
+        else:
+            item.ai_summary = item.title
+
     async def analyze_batch(self, items: List[ContentItem]) -> List[ContentItem]:
+        if self.client is None:
+            for item in items:
+                self._analyze_item_with_rules(item)
+            return items
+
         throttle_sec = self._get_throttle_sec()
         analyzed_items = []
 

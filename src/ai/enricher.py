@@ -26,8 +26,37 @@ from ..models import ContentItem
 class ContentEnricher:
     """Enriches high-scoring content items with background knowledge."""
 
-    def __init__(self, ai_client: AIClient):
+    def __init__(self, ai_client: Optional[AIClient] = None):
         self.client = ai_client
+
+    @staticmethod
+    def _enrich_item_with_rules(item: ContentItem) -> None:
+        meta = item.metadata
+        summary = item.ai_summary or item.title
+        meta["detailed_summary_en"] = summary
+        meta["detailed_summary_zh"] = f"原文摘要：{summary}"
+
+        source = item.source_type.value
+        if source == "github":
+            detail = f"项目 {meta.get('repo') or item.author or ''} 发布 {meta.get('tag') or '新版本'}。"
+        elif source == "rss":
+            detail = f"来自 {meta.get('feed_name') or item.author or 'RSS'} 的最新内容。"
+        else:
+            detail = ""
+        if detail:
+            meta["background_zh"] = detail
+
+        score = meta.get("score")
+        comments = meta.get("descendants", meta.get("num_comments"))
+        if score is not None:
+            discussion = f"社区热度 {score}"
+            if comments is not None:
+                discussion += f"，讨论 {comments} 条"
+            meta["community_discussion_zh"] = discussion + "。"
+
+        meta["detailed_summary"] = meta["detailed_summary_en"]
+        meta["background"] = meta.get("background_zh", "")
+        meta["community_discussion"] = meta.get("community_discussion_zh", "")
 
     async def enrich_batch(self, items: List[ContentItem]) -> None:
         """Enrich items in-place with background knowledge.
@@ -35,6 +64,11 @@ class ContentEnricher:
         Args:
             items: Content items to enrich (modified in-place)
         """
+        if self.client is None:
+            for item in items:
+                self._enrich_item_with_rules(item)
+            return
+
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),

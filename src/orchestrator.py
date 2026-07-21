@@ -3,8 +3,10 @@
 import asyncio
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
+import re
 from typing import List, Dict
 from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 import httpx
 from rich.console import Console
 
@@ -84,9 +86,10 @@ class HorizonOrchestrator:
                     f"→ {len(merged_items)} unique items\n"
                 )
 
-            # 4. Analyze with AI
+            # 4. Analyze content
             analyzed_items = await self._analyze_content(merged_items)
-            self.console.print(f"🤖 Analyzed {len(analyzed_items)} items with AI\n")
+            mode = "AI" if self.config.ai.enabled else "rules"
+            self.console.print(f"📊 Analyzed {len(analyzed_items)} items with {mode}\n")
 
             # 5. Filter by score threshold
             threshold = self.config.filtering.ai_score_threshold
@@ -95,6 +98,7 @@ class HorizonOrchestrator:
                 if item.ai_score and item.ai_score >= threshold
             ]
             important_items.sort(key=lambda x: x.ai_score or 0, reverse=True)
+            important_items = self.limit_selected_items(important_items)
 
             self.console.print(
                 f"⭐️ {len(important_items)} items scored ≥ {threshold}\n"
@@ -125,7 +129,7 @@ class HorizonOrchestrator:
             await self._enrich_important_items(important_items)
 
             # 7. Generate and save daily summaries for each configured language
-            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            today = datetime.now(ZoneInfo("Asia/Shanghai")).strftime("%Y-%m-%d")
             for lang in self.config.ai.languages:
                 summarizer = DailySummarizer()
                 summary = await summarizer.generate_summary(important_items, today, len(all_items), language=lang)
@@ -390,6 +394,9 @@ class HorizonOrchestrator:
         if len(items) <= 1:
             return items
 
+        if not self.config.ai.enabled:
+            return self._merge_rule_topic_duplicates(items)
+
         from .ai.prompts import TOPIC_DEDUP_SYSTEM, TOPIC_DEDUP_USER
         from .ai.utils import parse_json_response
 
@@ -448,6 +455,51 @@ class HorizonOrchestrator:
 
         return [item for i, item in enumerate(items) if i not in drop_indices]
 
+    @staticmethod
+    def _merge_rule_topic_duplicates(items: List[ContentItem]) -> List[ContentItem]:
+        kept: List[ContentItem] = []
+        token_sets: List[set[str]] = []
+
+        for item in items:
+            normalized = re.sub(r"[^a-z0-9\u3400-\u9fff]+", " ", item.title.lower()).strip()
+            tokens = set(normalized.split())
+            duplicate_index = None
+            for index, existing_tokens in enumerate(token_sets):
+                union = tokens | existing_tokens
+                similarity = len(tokens & existing_tokens) / len(union) if union else 0
+                if tokens == existing_tokens or (len(tokens) >= 3 and similarity >= 0.8):
+                    duplicate_index = index
+                    break
+
+            if duplicate_index is None:
+                kept.append(item)
+                token_sets.append(tokens)
+                continue
+
+            primary = kept[duplicate_index]
+            if item.content and (not primary.content or item.content not in primary.content):
+                primary.content = (primary.content or "") + f"\n\n--- From {item.source_type.value} ---\n{item.content}"
+
+        return kept
+
+    def limit_selected_items(self, items: List[ContentItem]) -> List[ContentItem]:
+        per_source_limit = self.config.filtering.max_items_per_source
+        total_limit = self.config.filtering.max_items_total
+        if per_source_limit <= 0 and total_limit <= 0:
+            return items
+
+        counts: Dict[str, int] = defaultdict(int)
+        selected: List[ContentItem] = []
+        for item in items:
+            key = f"{item.source_type.value}/{self._sub_source_label(item)}"
+            if per_source_limit > 0 and counts[key] >= per_source_limit:
+                continue
+            selected.append(item)
+            counts[key] += 1
+            if total_limit > 0 and len(selected) >= total_limit:
+                break
+        return selected
+
     async def _expand_twitter_discussion(self, items: List[ContentItem]) -> None:
         """Second-stage: fetch reply text for important Twitter items and re-analyze.
 
@@ -494,7 +546,7 @@ class HorizonOrchestrator:
         self.console.print(
             f"   Re-analyzing {len(expanded)} Twitter items with reply context...\n"
         )
-        ai_client = create_ai_client(self.config.ai)
+        ai_client = create_ai_client(self.config.ai) if self.config.ai.enabled else None
         analyzer = ContentAnalyzer(ai_client)
         await analyzer.analyze_batch(expanded)
 
@@ -510,14 +562,14 @@ class HorizonOrchestrator:
         if not items:
             return
 
-        self.console.print("📚 Enriching with background knowledge...")
-        ai_client = create_ai_client(self.config.ai)
+        self.console.print("📚 Enriching selected items...")
+        ai_client = create_ai_client(self.config.ai) if self.config.ai.enabled else None
         enricher = ContentEnricher(ai_client)
         await enricher.enrich_batch(items)
         self.console.print(f"   Enriched {len(items)} items\n")
 
     async def _analyze_content(self, items: List[ContentItem]) -> List[ContentItem]:
-        """Analyze content items with AI.
+        """Analyze content items.
 
         Args:
             items: Items to analyze
@@ -525,9 +577,10 @@ class HorizonOrchestrator:
         Returns:
             List[ContentItem]: Analyzed items
         """
-        self.console.print("🤖 Analyzing content with AI...")
+        mode = "AI" if self.config.ai.enabled else "rules"
+        self.console.print(f"📊 Analyzing content with {mode}...")
 
-        ai_client = create_ai_client(self.config.ai)
+        ai_client = create_ai_client(self.config.ai) if self.config.ai.enabled else None
         analyzer = ContentAnalyzer(ai_client)
 
         return await analyzer.analyze_batch(items)

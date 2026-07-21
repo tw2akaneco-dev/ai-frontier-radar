@@ -28,12 +28,12 @@ LABELS = {
         "empty_body": (
             "No significant developments today. This might indicate:\n"
             "- A quiet day in your tracked sources\n"
-            "- The AI score threshold is too high\n"
+            "- The score threshold is too high\n"
             "- Your information sources need expansion\n\n"
             "Consider:\n"
             "1. Lowering the `ai_score_threshold` in config.json\n"
             "2. Adding more diverse information sources\n"
-            "3. Checking if the AI model is working correctly\n"
+            "3. Checking whether the configured sources are reachable\n"
         ),
     },
     "zh": {
@@ -46,12 +46,12 @@ LABELS = {
         "empty_body": (
             "今日暂无重要动态，可能原因：\n"
             "- 今天关注的信息源较平静\n"
-            "- AI 评分阈值设置过高\n"
+            "- 规则评分阈值设置过高\n"
             "- 信息源种类有待扩充\n\n"
             "建议：\n"
             "1. 在 config.json 中降低 `ai_score_threshold`\n"
             "2. 添加更多多样化的信息源\n"
-            "3. 检查 AI 模型是否正常工作\n"
+            "3. 检查信息源是否可以正常访问\n"
         ),
     },
 }
@@ -88,11 +88,18 @@ class DailySummarizer:
         if not items:
             return self._generate_empty_summary(date, total_fetched, labels)
 
-        header = (
-            f"# {labels['header']} - {date}\n\n"
-            f"> From {total_fetched} items, {len(items)} important content pieces were selected\n\n"
-            "---\n\n"
-        )
+        if language == "zh":
+            header = (
+                f"# {labels['header']} - {date}\n\n"
+                f"> 从 {total_fetched} 条内容中按规则筛选出 {len(items)} 条重要资讯。\n\n"
+                "---\n\n"
+            )
+        else:
+            header = (
+                f"# {labels['header']} - {date}\n\n"
+                f"> Selected {len(items)} important items from {total_fetched} fetched items.\n\n"
+                "---\n\n"
+            )
 
         # TOC
         toc_entries = []

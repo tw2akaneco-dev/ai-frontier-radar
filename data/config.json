@@ -1,13 +1,10 @@
 {
   "version": "1.0",
   "ai": {
+    "enabled": false,
     "provider": "openai",
-    "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-    "model": "qwen-max",
-    "api_key_env": "DASHSCOPE_API_KEY",
-    "temperature": 0.3,
-    "max_tokens": 4096,
-    "throttle_sec": 0,
+    "model": "rule-based",
+    "api_key_env": "",
     "languages": ["zh"]
   },
   "email": {
@@ -76,7 +73,9 @@
   },
   "filtering": {
     "ai_score_threshold": 7.0,
-    "time_window_hours": 26
+    "time_window_hours": 26,
+    "max_items_per_source": 3,
+    "max_items_total": 60
   },
   "webhook": {
     "enabled": false

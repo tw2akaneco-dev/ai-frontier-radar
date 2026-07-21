@@ -323,7 +323,7 @@
         <div class="hero-stats" aria-label="系统概要">
           <div class="stat"><strong>33</strong><span>监控信号源</span></div>
           <div class="stat"><strong>07:00</strong><span>北京时间日报</span></div>
-          <div class="stat"><strong>7.0</strong><span>AI 入选阈值</span></div>
+          <div class="stat"><strong>7.0</strong><span>规则入选阈值</span></div>
         </div>
       </div>
     </div>
@@ -360,13 +360,13 @@
       <div class="shell">
         <div class="section-head">
           <div><p class="section-kicker">Daily Pipeline</p><h2>每日情报管线</h2></div>
-          <p class="section-note">Horizon 在一次运行中完成采集、去重、评分、扩展背景和中文摘要。</p>
+          <p class="section-note">Horizon 在一次运行中完成采集、去重、规则评分、内容整理和中文日报发布。</p>
         </div>
         <div class="pipeline">
           <div class="stage"><span class="stage-number">01</span><h3>采集</h3><p>读取 GitHub Releases、RSS、Hacker News 与 Reddit。</p></div>
           <div class="stage"><span class="stage-number">02</span><h3>去重</h3><p>合并相同链接和重复事件，控制日报噪声。</p></div>
-          <div class="stage"><span class="stage-number">03</span><h3>评分</h3><p>使用 qwen-max 对每条内容进行 0–10 分价值判断。</p></div>
-          <div class="stage"><span class="stage-number">04</span><h3>补充</h3><p>为高价值条目补齐背景、上下文和社区讨论。</p></div>
+          <div class="stage"><span class="stage-number">03</span><h3>评分</h3><p>根据来源权重、主题关键词和社区热度进行 0–10 分评分。</p></div>
+          <div class="stage"><span class="stage-number">04</span><h3>整理</h3><p>提取原文摘要、版本信息和社区讨论数据。</p></div>
           <div class="stage"><span class="stage-number">05</span><h3>发布</h3><p>生成中文 Markdown 日报并更新 GitHub Pages。</p></div>
         </div>
       </div>
@@ -376,21 +376,16 @@
       <div class="shell">
         <div class="section-head">
           <div><p class="section-kicker">Operations</p><h2>运行配置</h2></div>
-          <p class="section-note">密钥仅存在于 GitHub Secrets，不进入仓库、网页或日报。</p>
+          <p class="section-note">全流程无需外部 AI API Key，仅使用 GitHub Actions 自动凭据。</p>
         </div>
         <div class="ops-grid">
           <div class="status-list">
-            <div class="status-row"><div><strong>DASHSCOPE_API_KEY</strong><span>qwen-max 评分与摘要</span></div><span class="status-pill required">待配置</span></div>
+            <div class="status-row"><div><strong>外部 AI API</strong><span>规则评分与原文摘要</span></div><span class="status-pill auto">无需密钥</span></div>
             <div class="status-row"><div><strong>GITHUB_TOKEN</strong><span>读取 Releases 与发布 Pages</span></div><span class="status-pill auto">自动注入</span></div>
             <div class="status-row"><div><strong>APIFY_TOKEN</strong><span>Twitter/X 采集</span></div><span class="status-pill off">未启用</span></div>
             <div class="status-row"><div><strong>Webhook / Email</strong><span>外部推送渠道</span></div><span class="status-pill off">未启用</span></div>
           </div>
           <div class="config-stack">
-            <div class="code-panel">
-              <div class="code-title">GitHub Secret</div>
-              <button class="copy-button" type="button" title="复制" aria-label="复制 GitHub Secret 命令" data-copy="secret-command">⧉</button>
-              <pre id="secret-command">gh secret set DASHSCOPE_API_KEY --repo tw2akaneco-dev/ai-frontier-radar</pre>
-            </div>
             <div class="code-panel">
               <div class="code-title">Horizon MCP</div>
               <button class="copy-button" type="button" title="复制" aria-label="复制 Horizon MCP 配置" data-copy="mcp-config">⧉</button>
@@ -411,7 +406,10 @@
 timezone: Asia/Shanghai
 local_time: 07:00
 window_hours: 26
-score_threshold: 7.0</pre>
+score_threshold: 7.0
+max_items_per_source: 3
+max_items_total: 60
+ranking: rule-based</pre>
             </div>
           </div>
         </div>

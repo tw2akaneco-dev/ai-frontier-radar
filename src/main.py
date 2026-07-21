@@ -26,7 +26,7 @@ def print_banner():
  | |  | | (_) | |  | |/ / | (_) | | | |
  |_|  |_|\___/|_|  |_/___| \___/|_| |_|
 [/bold blue]
-[cyan]  AI-Driven Information Aggregation System[/cyan]
+[cyan]  Frontier Information Aggregation System[/cyan]
     """
     console.print(banner)
 

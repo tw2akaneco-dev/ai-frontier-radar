@@ -50,6 +50,7 @@ class AIProvider(str, Enum):
 class AIConfig(BaseModel):
     """AI client configuration."""
 
+    enabled: bool = True
     provider: AIProvider
     model: str
     base_url: Optional[str] = None
@@ -189,6 +190,8 @@ class FilteringConfig(BaseModel):
 
     ai_score_threshold: float = 7.0
     time_window_hours: int = 24
+    max_items_per_source: int = 0
+    max_items_total: int = 0
 
 
 class Config(BaseModel):

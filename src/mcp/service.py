@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import inspect
 import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from .errors import HorizonMcpError
 from .horizon_adapter import (
@@ -175,7 +177,7 @@ class HorizonPipelineService:
         missing_env: list[str] = []
 
         if check_env:
-            required = [ctx.config.ai.api_key_env]
+            required = [ctx.config.ai.api_key_env] if ctx.config.ai.enabled else []
             for key in required:
                 if not os.getenv(key):
                     missing_env.append(key)
@@ -196,6 +198,8 @@ class HorizonPipelineService:
             "horizon_path": str(ctx.horizon_path),
             "config_path": str(ctx.config_path),
             "ai": {
+                "enabled": ctx.config.ai.enabled,
+                "mode": "model" if ctx.config.ai.enabled else "rules",
                 "provider": ctx.config.ai.provider.value,
                 "model": ctx.config.ai.model,
                 "languages": list(ctx.config.ai.languages),
@@ -204,6 +208,8 @@ class HorizonPipelineService:
             "filtering": {
                 "ai_score_threshold": ctx.config.filtering.ai_score_threshold,
                 "time_window_hours": ctx.config.filtering.time_window_hours,
+                "max_items_per_source": ctx.config.filtering.max_items_per_source,
+                "max_items_total": ctx.config.filtering.max_items_total,
             },
             "enabled_sources": get_enabled_sources(ctx.config),
             "selected_sources": selected_sources,
@@ -279,7 +285,7 @@ class HorizonPipelineService:
         if not items:
             raise HorizonMcpError(code="HZ_EMPTY_INPUT", message="No items available for scoring.")
 
-        ai_client = ctx.runtime.create_ai_client(ctx.config.ai)
+        ai_client = ctx.runtime.create_ai_client(ctx.config.ai) if ctx.config.ai.enabled else None
         analyzer = ctx.runtime.ContentAnalyzer(ai_client)
         scored_items = await analyzer.analyze_batch(items)
 
@@ -326,11 +332,21 @@ class HorizonPipelineService:
         important_items = [item for item in items if item.ai_score and item.ai_score >= effective_threshold]
         important_items.sort(key=lambda x: x.ai_score or 0, reverse=True)
 
-        before_dedup = len(important_items)
-        if topic_dedup and important_items:
+        orchestrator = None
+        max_per_source = getattr(ctx.config.filtering, "max_items_per_source", 0)
+        max_total = getattr(ctx.config.filtering, "max_items_total", 0)
+        if max_per_source > 0 or max_total > 0:
             storage = make_storage(ctx.runtime, ctx.config_path)
             orchestrator = make_orchestrator(ctx.runtime, ctx.config, storage)
-            important_items = await orchestrator.merge_topic_duplicates(important_items)
+            important_items = orchestrator.limit_selected_items(important_items)
+
+        before_dedup = len(important_items)
+        if topic_dedup and important_items:
+            if orchestrator is None:
+                storage = make_storage(ctx.runtime, ctx.config_path)
+                orchestrator = make_orchestrator(ctx.runtime, ctx.config, storage)
+            deduped_items = orchestrator.merge_topic_duplicates(important_items)
+            important_items = await deduped_items if inspect.isawaitable(deduped_items) else deduped_items
 
         self.run_store.save_items(run_id, "filtered", items_to_dicts(important_items))
         meta = self.run_store.update_meta(
@@ -370,7 +386,7 @@ class HorizonPipelineService:
         if not items:
             raise HorizonMcpError(code="HZ_EMPTY_INPUT", message="No items available for enrichment.")
 
-        ai_client = ctx.runtime.create_ai_client(ctx.config.ai)
+        ai_client = ctx.runtime.create_ai_client(ctx.config.ai) if ctx.config.ai.enabled else None
         enricher = ctx.runtime.ContentEnricher(ai_client)
         await enricher.enrich_batch(items)
 
@@ -414,7 +430,7 @@ class HorizonPipelineService:
         )
 
         total_fetched = self._total_fetched(run_id, fallback=len(items))
-        date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        date_str = datetime.now(ZoneInfo("Asia/Shanghai")).strftime("%Y-%m-%d")
 
         summarizer = ctx.runtime.DailySummarizer()
         summary = await summarizer.generate_summary(
