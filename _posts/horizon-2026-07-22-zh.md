@@ -1,23 +1,23 @@
 # Horizon 每日速递 - 2026-07-22
 
-> 从 1249 条内容中按规则筛选出 29 条重要资讯。
+> 从 1252 条内容中按规则筛选出 27 条重要资讯。
 
 ---
 
 1. [Introducing the ChatGPT for small business program](#item-1) ⭐️ 8.6/10
-2. [Merge pull request #3106 from olaservo/feature/add-note-on-structured…](#item-2) ⭐️ 8.4/10
-3. [Merge pull request #3092 from DaleSeo/fix/sep-2575-error-codes](#item-3) ⭐️ 8.4/10
-4. [docs: align SEP-2575 error codes](#item-4) ⭐️ 8.4/10
-5. [microsoft/agent-framework released python-1.12.0](#item-5) ⭐️ 8.3/10
-6. [microsoft/agent-framework released dotnet-1.14.0](#item-6) ⭐️ 8.3/10
-7. [OpenAI and Hugging Face address security incident during model evaluation](#item-7) ⭐️ 8.3/10
-8. [Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber](#item-8) ⭐️ 8.3/10
-9. [Jack Dorsey launches Buzz to combine team chat, AI agents and Git hosting](#item-9) ⭐️ 8.3/10
+2. [Jack Dorsey launches Buzz to combine team chat, AI agents and Git hosting](#item-2) ⭐️ 8.5/10
+3. [Merge pull request #3106 from olaservo/feature/add-note-on-structured…](#item-3) ⭐️ 8.4/10
+4. [Merge pull request #3092 from DaleSeo/fix/sep-2575-error-codes](#item-4) ⭐️ 8.4/10
+5. [docs: align SEP-2575 error codes](#item-5) ⭐️ 8.4/10
+6. [microsoft/agent-framework released python-1.12.0](#item-6) ⭐️ 8.3/10
+7. [microsoft/agent-framework released dotnet-1.14.0](#item-7) ⭐️ 8.3/10
+8. [OpenAI and Hugging Face address security incident during model evaluation](#item-8) ⭐️ 8.3/10
+9. [Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber](#item-9) ⭐️ 8.3/10
 10. [Qwen-Image-3.0: Rich Content, Authentic Details, Deep Knowledge](#item-10) ⭐️ 8.3/10
-11. [Advertise in ChatGPT](#item-11) ⭐️ 8.3/10
-12. [Merge pull request #9850 from agentIgris/add-agentfund-mcp](#item-12) ⭐️ 8.3/10
-13. [ggml-org/llama.cpp released b10076](#item-13) ⭐️ 8.2/10
-14. [ggml-org/llama.cpp released b10075](#item-14) ⭐️ 8.2/10
+11. [Merge pull request #9850 from agentIgris/add-agentfund-mcp](#item-11) ⭐️ 8.3/10
+12. [ggml-org/llama.cpp released b10078](#item-12) ⭐️ 8.2/10
+13. [ggml-org/llama.cpp released b10077](#item-13) ⭐️ 8.2/10
+14. [ggml-org/llama.cpp released b10076](#item-14) ⭐️ 8.2/10
 15. [David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC](#item-15) ⭐️ 8.2/10
 16. [Merge pull request #10305 from slenderongithub/add-fix-protocol-mcp](#item-16) ⭐️ 8.0/10
 17. [Nativ: Run AI models locally on your Mac](#item-17) ⭐️ 7.8/10
@@ -27,12 +27,10 @@
 21. [Merge pull request #9058 from 0xJosee/add-truetick-mcp](#item-21) ⭐️ 7.7/10
 22. [The State of Simulation for Physical AI: An Overview](#item-22) ⭐️ 7.6/10
 23. [Grabette: an open system to record robot-manipulation data](#item-23) ⭐️ 7.6/10
-24. [ollama/ollama released v0.32.2-rc2](#item-24) ⭐️ 7.4/10
-25. [modelcontextprotocol/typescript-sdk released @modelcontextprotocol/server@2.0.0-beta.5](#item-25) ⭐️ 7.3/10
-26. [google-gemini/gemini-cli released v0.52.0-nightly.20260721.gacae7124b](#item-26) ⭐️ 7.3/10
-27. [Meta's AI models are powering the first wave of Genesis Mission projects](#item-27) ⭐️ 7.3/10
-28. [(AINews) not much happened today](#item-28) ⭐️ 7.3/10
-29. [MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models](#item-29) ⭐️ 7.0/10
+24. [modelcontextprotocol/typescript-sdk released @modelcontextprotocol/server@2.0.0-beta.5](#item-24) ⭐️ 7.3/10
+25. [google-gemini/gemini-cli released v0.52.0-nightly.20260721.gacae7124b](#item-25) ⭐️ 7.3/10
+26. [(AINews) not much happened today](#item-26) ⭐️ 7.3/10
+27. [MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models](#item-27) ⭐️ 7.0/10
 
 ---
 
@@ -50,6 +48,19 @@ rss · OpenAI News · Jul 21, 17:00
 ---
 
 <a id="item-2"></a>
+## [Jack Dorsey launches Buzz to combine team chat, AI agents and Git hosting](https://runtimewire.com/article/jack-dorsey-block-buzz-team-chat-ai-agents-git) ⭐️ 8.5/10
+
+原文摘要：https://x.com/jack/status/2079605800998146171 , https://xcancel.com/jack/status/2079605800998146171 https://buzz.xyz/
+
+hackernews · ryanmerket · Jul 21, 17:14 · [社区讨论](https://news.ycombinator.com/item?id=48995213)
+
+**社区讨论**: 社区热度 210，讨论 198 条。
+
+**标签**: `#agent`
+
+---
+
+<a id="item-3"></a>
 ## [Merge pull request #3106 from olaservo/feature/add-note-on-structured…](https://github.com/modelcontextprotocol/modelcontextprotocol/commit/88191b9f574d67d553ea9372278a14e09d762f55) ⭐️ 8.4/10
 
 原文摘要：Merge pull request #3106 from olaservo/feature/add-note-on-structured-content docs: clarify structuredContent is not LLM "structured outputs"
@@ -62,7 +73,7 @@ rss · MCP Protocol Commits · Jul 21, 03:44
 
 ---
 
-<a id="item-3"></a>
+<a id="item-4"></a>
 ## [Merge pull request #3092 from DaleSeo/fix/sep-2575-error-codes](https://github.com/modelcontextprotocol/modelcontextprotocol/commit/c8425b951edd2c518de95b0c58f79e31b71daca7) ⭐️ 8.4/10
 
 原文摘要：Merge pull request #3092 from DaleSeo/fix/sep-2575-error-codes docs: align SEP-2575 error codes
@@ -75,7 +86,7 @@ rss · MCP Protocol Commits · Jul 21, 03:34
 
 ---
 
-<a id="item-4"></a>
+<a id="item-5"></a>
 ## [docs: align SEP-2575 error codes](https://github.com/modelcontextprotocol/modelcontextprotocol/commit/583f3cd2788966d9dc5b6806e0bc5528882b3b50) ⭐️ 8.4/10
 
 原文摘要：docs: align SEP-2575 error codes
@@ -88,7 +99,7 @@ rss · MCP Protocol Commits · Jul 21, 00:34
 
 ---
 
-<a id="item-5"></a>
+<a id="item-6"></a>
 ## [microsoft/agent-framework released python-1.12.0](https://github.com/microsoft/agent-framework/releases/tag/python-1.12.0) ⭐️ 8.3/10
 
 原文摘要：## [1.12.0] - 2026-07-21 ### Added - **agent-framework-azure-cosmos-memory**: Add an alpha Azure Cosmos DB semantic-memory context provider with fact extraction, user profiles, samples, and integration coverage (#6719) - **agent-framework-azurefunctions**, **agent-framework-core**, **agent-framework-durabletask**:...
@@ -101,7 +112,7 @@ github · giles17 · Jul 21, 19:40
 
 ---
 
-<a id="item-6"></a>
+<a id="item-7"></a>
 ## [microsoft/agent-framework released dotnet-1.14.0](https://github.com/microsoft/agent-framework/releases/tag/dotnet-1.14.0) ⭐️ 8.3/10
 
 原文摘要：## What's Changed * .NET: Fix CosmosChatHistoryProvider: omit ttl when MessageTtlSeconds is nul… by @TheovanKraay in https://github.com/microsoft/agent-framework/pull/7030 * .NET: Fix CompactionMessageIndex.IsSummaryMessage by @pwoosam in https://github.com/microsoft/agent-framework/pull/7042 * .NET: Fix workflow...
@@ -114,42 +125,29 @@ github · westey-m · Jul 21, 16:21
 
 ---
 
-<a id="item-7"></a>
+<a id="item-8"></a>
 ## [OpenAI and Hugging Face address security incident during model evaluation](https://openai.com/index/hugging-face-model-evaluation-security-incident/) ⭐️ 8.3/10
 
-原文摘要：OpenAI and Hugging Face address security incident during model evaluation
+原文摘要：https://www.axios.com/2026/07/21/openai-says-hugging-face-br... See also Security incident disclosure – July 2026 - https://news.ycombinator.com/item?id=48956248 (9 comments)
 
 hackernews · OpenAI News · Jul 21, 20:09 · [社区讨论](https://news.ycombinator.com/item?id=48997548)
 
-**社区讨论**: 社区热度 330，讨论 185 条。
+**社区讨论**: 社区热度 574，讨论 376 条。
 
 **标签**: `#model`, `#frontier-labs`
 
 ---
 
-<a id="item-8"></a>
+<a id="item-9"></a>
 ## [Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/) ⭐️ 8.3/10
 
 原文摘要：https://console.cloud.google.com/agent-platform/publishers/g...
 
 hackernews · logickkk1 · Jul 21, 15:17 · [社区讨论](https://news.ycombinator.com/item?id=48993414)
 
-**社区讨论**: 社区热度 534，讨论 429 条。
+**社区讨论**: 社区热度 585，讨论 465 条。
 
 **标签**: `#model`
-
----
-
-<a id="item-9"></a>
-## [Jack Dorsey launches Buzz to combine team chat, AI agents and Git hosting](https://runtimewire.com/article/jack-dorsey-block-buzz-team-chat-ai-agents-git) ⭐️ 8.3/10
-
-原文摘要：https://x.com/jack/status/2079605800998146171 , https://xcancel.com/jack/status/2079605800998146171 https://buzz.xyz/
-
-hackernews · ryanmerket · Jul 21, 17:14 · [社区讨论](https://news.ycombinator.com/item?id=48995213)
-
-**社区讨论**: 社区热度 160，讨论 150 条。
-
-**标签**: `#agent`
 
 ---
 
@@ -160,26 +158,13 @@ hackernews · ryanmerket · Jul 21, 17:14 · [社区讨论](https://news.ycombin
 
 hackernews · ilreb · Jul 21, 08:44 · [社区讨论](https://news.ycombinator.com/item?id=48989701)
 
-**社区讨论**: 社区热度 519，讨论 207 条。
+**社区讨论**: 社区热度 537，讨论 211 条。
 
 **标签**: `#model`
 
 ---
 
 <a id="item-11"></a>
-## [Advertise in ChatGPT](https://ads.openai.com/) ⭐️ 8.3/10
-
-原文摘要：Advertise in ChatGPT
-
-hackernews · montecarl · Jul 21, 18:58 · [社区讨论](https://news.ycombinator.com/item?id=48996571)
-
-**社区讨论**: 社区热度 219，讨论 221 条。
-
-**标签**: `#model`
-
----
-
-<a id="item-12"></a>
 ## [Merge pull request #9850 from agentIgris/add-agentfund-mcp](https://github.com/punkpeye/awesome-mcp-servers/commit/e3123562d1b3970f650b5bc32ff049e624e29f64) ⭐️ 8.3/10
 
 原文摘要：Merge pull request #9850 from agentIgris/add-agentfund-mcp Add @agentfund/mcp to Finance & Fintech 🤖🤖🤖
@@ -192,7 +177,33 @@ rss · Awesome MCP Servers · Jul 21, 19:55
 
 ---
 
+<a id="item-12"></a>
+## [ggml-org/llama.cpp released b10078](https://github.com/ggml-org/llama.cpp/releases/tag/b10078) ⭐️ 8.2/10
+
+原文摘要：vulkan: Refactor vk_queue to use per-instance mutexes and unique handles (#23570) * Refactor vk_queue to use per-instance mutexes and unique handles * integrates VK_KHR_internally_synchronized_queues, abstracting the queue submission into a polymorphic interface that completely bypasses host-side mutex locking when...
+
+github · github-actions[bot] · Jul 21, 22:38
+
+**背景**: 项目 ggml-org/llama.cpp 发布 b10078。
+
+**标签**: `#inference`, `#open-source`
+
+---
+
 <a id="item-13"></a>
+## [ggml-org/llama.cpp released b10077](https://github.com/ggml-org/llama.cpp/releases/tag/b10077) ⭐️ 8.2/10
+
+原文摘要：ggml-openvino: Add GGML_BACKEND_DL_IMPL invocation for OpenVINO backend (#25795) This adds the missing `GGML_BACKEND_DL_IMPL()` macro invocation, that other backends have. Fixes #25586 for me **Website:** - **macOS/iOS:** - macOS Apple Silicon (arm64) - macOS Apple Silicon (arm64, KleidiAI enabled) DISABLED - macOS...
+
+github · github-actions[bot] · Jul 21, 21:53
+
+**背景**: 项目 ggml-org/llama.cpp 发布 b10077。
+
+**标签**: `#inference`, `#open-source`
+
+---
+
+<a id="item-14"></a>
 ## [ggml-org/llama.cpp released b10076](https://github.com/ggml-org/llama.cpp/releases/tag/b10076) ⭐️ 8.2/10
 
 原文摘要：CUDA: vectorize same-type get_rows with int4 copy (#25929) k_get_rows_float did a scalar one-element-per-thread copy and recomputed the row-invariant work (index load, fast_div_modulo, src/dst row pointers) for every element. Hoist that out of the per-element loop, and add a vectorized path (k_get_rows_float_vec)...
@@ -200,19 +211,6 @@ rss · Awesome MCP Servers · Jul 21, 19:55
 github · github-actions[bot] · Jul 21, 15:52
 
 **背景**: 项目 ggml-org/llama.cpp 发布 b10076。
-
-**标签**: `#inference`, `#open-source`
-
----
-
-<a id="item-14"></a>
-## [ggml-org/llama.cpp released b10075](https://github.com/ggml-org/llama.cpp/releases/tag/b10075) ⭐️ 8.2/10
-
-原文摘要：hexagon: add CLAMP op (#25934) **Website:** - **macOS/iOS:** - macOS Apple Silicon (arm64) - macOS Apple Silicon (arm64, KleidiAI enabled) DISABLED - macOS Intel (x64) - iOS XCFramework **Linux:** - Ubuntu x64 (CPU) - Ubuntu arm64 (CPU) - Ubuntu s390x (CPU) - Ubuntu x64 (Vulkan) - Ubuntu arm64 (Vulkan) - Ubuntu x64...
-
-github · github-actions[bot] · Jul 20, 23:47
-
-**背景**: 项目 ggml-org/llama.cpp 发布 b10075。
 
 **标签**: `#inference`, `#open-source`
 
@@ -336,19 +334,6 @@ rss · Hugging Face Blog · Jul 21, 00:00
 ---
 
 <a id="item-24"></a>
-## [ollama/ollama released v0.32.2-rc2](https://github.com/ollama/ollama/releases/tag/v0.32.2-rc2) ⭐️ 7.4/10
-
-原文摘要：## What's Changed * launch: keep Claude Code channels available by @hoyyeva in https://github.com/ollama/ollama/pull/17210 * cmd: remove dead agent prompt wrappers by @ParthSareen in https://github.com/ollama/ollama/pull/17227 * agent: reorder working directory instruction by @ParthSareen in...
-
-github · github-actions[bot] · Jul 20, 21:00
-
-**背景**: 项目 ollama/ollama 发布 v0.32.2-rc2。
-
-**标签**: `#inference`, `#open-source`
-
----
-
-<a id="item-25"></a>
 ## [modelcontextprotocol/typescript-sdk released @modelcontextprotocol/server@2.0.0-beta.5](https://github.com/modelcontextprotocol/typescript-sdk/releases/tag/%40modelcontextprotocol/server%402.0.0-beta.5) ⭐️ 7.3/10
 
 原文摘要：### Minor Changes - #2501 `1480241` Thanks @felixweinberger! - Export the `Protocol` base class and `mergeCapabilities` from the `@modelcontextprotocol/client` and `@modelcontextprotocol/server` package roots, restoring the v1 import for consumers that subclass `Protocol` (e.g. the MCP Apps SDK). The client and...
@@ -361,7 +346,7 @@ github · github-actions[bot] · Jul 21, 13:39
 
 ---
 
-<a id="item-26"></a>
+<a id="item-25"></a>
 ## [google-gemini/gemini-cli released v0.52.0-nightly.20260721.gacae7124b](https://github.com/google-gemini/gemini-cli/releases/tag/v0.52.0-nightly.20260721.gacae7124b) ⭐️ 7.3/10
 
 原文摘要：**Full Changelog**: https://github.com/google-gemini/gemini-cli/compare/v0.52.0-nightly.20260720.gacae7124b...v0.52.0-nightly.20260721.gacae7124b
@@ -374,20 +359,7 @@ github · gemini-cli-robot · Jul 21, 01:26
 
 ---
 
-<a id="item-27"></a>
-## [Meta's AI models are powering the first wave of Genesis Mission projects](https://ai.meta.com/blog/genesis-mission-lawrence-berkeley-national-laboratory-segment-anything-dino/?_fb_noscript=1) ⭐️ 7.3/10
-
-原文摘要：https://www.energy.gov/undersecretaryforscience/genesis-miss...
-
-hackernews · surprisetalk · Jul 21, 17:03 · [社区讨论](https://news.ycombinator.com/item?id=48995074)
-
-**社区讨论**: 社区热度 83，讨论 56 条。
-
-**标签**: `#model`
-
----
-
-<a id="item-28"></a>
+<a id="item-26"></a>
 ## [(AINews) not much happened today](https://www.latent.space/p/ainews-not-much-happened-today-173) ⭐️ 7.3/10
 
 原文摘要：a quiet day.
@@ -400,7 +372,7 @@ rss · Latent Space · Jul 21, 03:58
 
 ---
 
-<a id="item-29"></a>
+<a id="item-27"></a>
 ## [MADA-RL: Multi-Agent Debate-Aware Reinforcement Learning for Parameter-Efficient Reasoning in Compact Models](https://arxiv.org/abs/2607.18006) ⭐️ 7.0/10
 
 原文摘要：arXiv:2607.18006v1 Announce Type: cross Abstract: Large language models achieve strong reasoning performance, but often at prohibitive training cost - a challenge that is especially acute for compact models ($\leq 4 \, \mathrm{B}$ parameters) trained under limited budgets. We introduce MADA-RL, a post-training...
